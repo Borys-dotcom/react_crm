@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import config from "../config";
 import "./Customers.css"
 import { useNavigate } from "react-router";
-import { redirect } from "react-router"
 
 const Customers = () => {
   const [customerList, setCustomerList] = useState([]);
@@ -27,6 +26,16 @@ const Customers = () => {
     return navigate(path);
   }
 
+  const addNewCustomer = () => {
+    let path = "/add/" 
+    return navigate(path);
+  }
+
+  const editCustomer = (e) => {
+    let path = "/add/" + e.target.id;
+    return navigate(path);
+  }
+
   useEffect(() => {
     getCustomerData();
   }, []);
@@ -34,6 +43,7 @@ const Customers = () => {
   return (
     <div className="container">
       <h1>Customers List</h1>
+      <button onClick={addNewCustomer}>Add new</button>
       <table>
         <thead className="table-header">
           <tr>
@@ -56,6 +66,8 @@ const Customers = () => {
                 <td>{customer.taxNumber}</td>
                 <td>
                     <button onClick={singleCustomerData} id={customer._id}>Więcej</button>
+                    <button onClick={editCustomer} id={customer._id}>Edytuj</button>
+                    <button id={customer._id}>Usuń</button>
                 </td>
             </tr>
             )

@@ -10,3 +10,18 @@ body {
   width: 80%;
   margin: 0 auto;
 }
+
+.button-yes,
+.button-no {
+  width: 50px;
+  height: 30px;
+  border: 0px;
+}
+
+.button-no {
+  background-color: #FF5C00;
+}
+
+.button-yes {
+  background-color: #7EFF33;
+}

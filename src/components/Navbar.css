@@ -1,0 +1,8 @@
+.navbar-list {
+    display: flex;
+    gap: 24px;
+}
+
+ul  {
+    list-style-type: none;
+}

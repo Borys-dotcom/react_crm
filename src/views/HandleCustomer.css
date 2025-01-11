@@ -3,9 +3,24 @@ label {
 }
 
 input {
-    width: 50%;
+    width: 100%;
+    /* background-color: pink; */
+}
+
+form {
+    padding: 12px;
+    width: 50%
 }
 
 .error-messages {
+    padding: 12px;
     color: red;
+}
+
+.form-container {
+    display: flex
+}
+
+.inputError {
+    background-color: pink;
 }

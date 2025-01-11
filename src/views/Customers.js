@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "../config";
-import "./Customers.css"
+import "./Customers.css";
 import { useNavigate } from "react-router";
 
 const Customers = () => {
   const [customerList, setCustomerList] = useState([]);
   let navigate = useNavigate();
+  const [showPopUp, setShowPopUp] = useState(false);
+  const [customerToDelete, setCustomerToDelete] = useState("");
 
   const getCustomerData = () => {
     axios
@@ -24,17 +26,47 @@ const Customers = () => {
   const singleCustomerData = (e) => {
     let path = "/customer/" + e.target.id;
     return navigate(path);
-  }
+  };
 
   const addNewCustomer = () => {
-    let path = "/add/" 
+    let path = "/add/";
     return navigate(path);
-  }
+  };
 
   const editCustomer = (e) => {
-    let path = "/add/" + e.target.id;
+    let path = "/edit/" + e.target.id;
     return navigate(path);
-  }
+  };
+
+  const deleteCustomerConfirmationWindow = (e) => {
+    setShowPopUp(!showPopUp);
+
+    let customerToDelete = customerList.filter((customer) => {
+      return customer._id === e.target.id;
+    });
+
+    setCustomerToDelete(customerToDelete);
+  };
+
+  const actionYes = () => {
+    let path =
+      `http://${config.db.url}:${config.db.port}/${config.db.collection.customer}/delete/` +
+      customerToDelete[0]._id;
+
+    axios
+      .delete(path)
+      .catch((err) => {
+        console.log(err);
+      })
+      .then(() => {
+        getCustomerData();
+      });
+    setShowPopUp(!showPopUp);
+  };
+
+  const actionNo = () => {
+    setShowPopUp(!showPopUp);
+  };
 
   useEffect(() => {
     getCustomerData();
@@ -42,7 +74,7 @@ const Customers = () => {
 
   return (
     <div className="container">
-      <h1>Customers List</h1>
+      <h1>Lista klientów</h1>
       <button onClick={addNewCustomer}>Add new</button>
       <table>
         <thead className="table-header">
@@ -58,22 +90,48 @@ const Customers = () => {
         <tbody className="table-body">
           {customerList.map((customer, index) => {
             return (
-            <tr key={index}>
+              <tr key={index}>
                 <td>{customer.name}</td>
                 <td>{customer.address.street}</td>
                 <td>{customer.address.city}</td>
                 <td>{customer.address.zipCode}</td>
                 <td>{customer.taxNumber}</td>
                 <td>
-                    <button onClick={singleCustomerData} id={customer._id}>Więcej</button>
-                    <button onClick={editCustomer} id={customer._id}>Edytuj</button>
-                    <button id={customer._id}>Usuń</button>
+                  <button onClick={singleCustomerData} id={customer._id}>
+                    Więcej
+                  </button>
+                  <button onClick={editCustomer} id={customer._id}>
+                    Edytuj
+                  </button>
+                  <button
+                    onClick={deleteCustomerConfirmationWindow}
+                    id={customer._id}
+                  >
+                    Usuń
+                  </button>
                 </td>
-            </tr>
-            )
-        })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
+      {showPopUp && (
+        <div className="popup-window">
+          <div className="popup-content">
+            <div>
+              Czy na pewno chcesz usunąć użytkownika {customerToDelete[0].name}?
+            </div>
+            <div className="button-container">
+              <button onClick={actionYes} className="button-yes">
+                Tak
+              </button>
+              <button onClick={actionNo} className="button-no">
+                Nie
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

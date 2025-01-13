@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "../config";
 import "./Customers.css";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Customers = () => {
   const [customerList, setCustomerList] = useState([]);
@@ -48,7 +48,7 @@ const Customers = () => {
     setCustomerToDelete(customerToDelete);
   };
 
-  const actionYes = () => {
+  const deleteCustomer = () => {
     let path =
       `http://${config.db.url}:${config.db.port}/${config.db.collection.customer}/delete/` +
       customerToDelete[0]._id;
@@ -61,10 +61,6 @@ const Customers = () => {
       .then(() => {
         getCustomerData();
       });
-    setShowPopUp(!showPopUp);
-  };
-
-  const actionNo = () => {
     setShowPopUp(!showPopUp);
   };
 
@@ -122,10 +118,15 @@ const Customers = () => {
               Czy na pewno chcesz usunąć użytkownika {customerToDelete[0].name}?
             </div>
             <div className="button-container">
-              <button onClick={actionYes} className="button-yes">
+              <button onClick={deleteCustomer} className="button-yes">
                 Tak
               </button>
-              <button onClick={actionNo} className="button-no">
+              <button
+                onClick={() => {
+                  setShowPopUp(!showPopUp);
+                }}
+                className="button-no"
+              >
                 Nie
               </button>
             </div>

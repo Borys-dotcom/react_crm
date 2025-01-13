@@ -10,25 +10,17 @@ import NewAction from "./NewAction";
 const SingleCustomer = () => {
   let params = useParams();
 
-  const [customerData, setCustomerData] = useState([]);
+  const [customerData, setCustomerData] = useState(null);
   const navigate = useNavigate();
   const [showAddNewAction, setShowAddNewAction] = useState(false);
- 
+
   const getCustomerData = () => {
     axios
-      .post(
+      .get(
         `http://${config.db.url}:${config.db.port}/${config.db.collection.customer}/find/${params.id}`
       )
-      .then((res) => {
-        setCustomerData([
-          <h2>{res.data.name}</h2>,
-          <h3>Adres:</h3>,
-          <p>{res.data.address.street}</p>,
-          <p>
-            {res.data.address.city} {res.data.address.zipCode}
-          </p>,
-          <p>NIP: {res.data.taxNumber}</p>,
-        ]);
+      .then((customer) => {
+        setCustomerData(customer.data);
       })
       .catch((err) => {
         console.error(err);
@@ -50,13 +42,27 @@ const SingleCustomer = () => {
 
   return (
     <div className="container">
-      {customerData.map((data, index) => {
-        return <div key={index}>{data}</div>;
-      })}
-      <button onClick={returnToMainPage}>Powrót</button>
-      <button onClick={addNewActionShow}>Dodaj nową akcję</button>
-      <ActionList customerId={params.id}/>
-      {showAddNewAction && <NewAction addNewActionShow={addNewActionShow} defaultSelection={params.id}/>}
+      {customerData ? (
+        <>
+          <h2>{customerData.name}</h2>
+          <h3>Adres:</h3>
+          <p>{customerData.address.street}</p>
+          <p>
+            {customerData.address.city} {customerData.address.zipCode}
+          </p>
+          <p>NIP: {customerData.taxNumber}</p>
+          <button onClick={returnToMainPage}>Powrót</button>
+          <button onClick={addNewActionShow}>Dodaj nową akcję</button>
+          <ActionList customerData={[customerData._id, customerData.name]} />
+          {showAddNewAction && (
+            <NewAction
+              addNewActionShow={addNewActionShow}
+              defaultSelection={params.id}
+              customerData={[customerData._id, customerData.name]}
+            />
+          )}
+        </>
+      ) : <h3>Loading...</h3>}
     </div>
   );
 };

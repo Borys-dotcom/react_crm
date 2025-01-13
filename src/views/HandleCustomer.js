@@ -21,7 +21,7 @@ const HandleCustomer = () => {
     if (params.id) {
       let path = "http://localhost:3005/customer/find/" + params.id;
       axios
-        .post(path)
+        .get(path)
         .then((customer) => {
           setCustomerData(customer.data);
         })
@@ -71,7 +71,7 @@ const HandleCustomer = () => {
     } else {
       const path = "http://localhost:3005/customer/update/" + params.id;
       axios
-        .post(path, customerData)
+        .put(path, customerData)
         .then(() => {
           let path = "/";
           return navigate(path);

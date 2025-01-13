@@ -8,7 +8,7 @@ const ActionList = (props) => {
   const getActionListFromDB = () => {
     axios
       .get(
-        `http://${config.db.url}:${config.db.port}/${config.db.collection.action}/${props.customerId}`
+        `http://${config.db.url}:${config.db.port}/${config.db.collection.action}/${props.customerData[0]}`
       )
       .then((actions) => {
         setActionList(actions.data);
@@ -24,7 +24,7 @@ const ActionList = (props) => {
 
   return (
     <div className="container">
-      <h3>Lista akcji dla klienta</h3>
+      <h3>Lista akcji:</h3>
       <table>
         <thead className="table-header">
           <tr>

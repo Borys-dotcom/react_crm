@@ -8,46 +8,21 @@ const NewAction = (props) => {
   const [customerList, setCustomerList] = useState([]);
   const [viewSelection, setViewSelection] = useState(false);
 
-  const getCustomerList = () => {
-    axios
-      .get(
-        `http://${config.db.url}:${config.db.port}/${config.db.collection.customer}/`
-      )
-      .then((res) => {
-        setCustomerList(
-          res.data.map((customer, index) => {
-            return {key: `${customer._id}`, value: customer.name};
-          })
-        );
-        setViewSelection(!viewSelection);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const submitNewAction = (e) => {
     e.preventDefault();
     console.log("zapisana");
   };
 
   useEffect(() => {
-    getCustomerList();
+    // getCustomerList();
   }, []);
 
   return (
     <div className="popup-new-action">
       <div className="popup-new-action-content">
-        <h2>Dodaj nową akcję</h2>
+        <h2>Dodaj nową akcję dla klienta:</h2>
+        <h2>{props.customerData[1]}</h2>
         <form onSubmit={submitNewAction}>
-          <label htmlFor="customer">Klient</label>
-          {viewSelection && <CustomSelect
-            selectOptions={customerList}
-            id="customer"
-            name="customer"
-            defaultSelection={props.defaultSelection}
-            disabled = {true}
-          />}
           <label htmlFor="type">Typ akcji:</label>
           <CustomSelect
             selectOptions={config.action.selectOptions}

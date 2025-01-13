@@ -3,8 +3,17 @@ const config = {
         url: "localhost",
         port: "3005",
         collection: {
-            customer: "customer"
+            customer: "customer",
+            action: "action"
         }
+    },
+
+    action: {
+        selectOptions: [
+            {key: "meeting", value: "Spotkanie"},
+            {key: "phoneCall", value: "Rozmowa telefoniczna"},
+            {key: "email", value: "Wiadomość email"}
+        ]
     }
 }
 

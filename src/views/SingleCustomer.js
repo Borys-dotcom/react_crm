@@ -4,13 +4,16 @@ import config from "../config";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import React from "react";
+import ActionList from "./ActionList";
+import NewAction from "./NewAction";
 
 const SingleCustomer = () => {
   let params = useParams();
 
   const [customerData, setCustomerData] = useState([]);
   const navigate = useNavigate();
-
+  const [showAddNewAction, setShowAddNewAction] = useState(false);
+ 
   const getCustomerData = () => {
     axios
       .post(
@@ -32,6 +35,10 @@ const SingleCustomer = () => {
       });
   };
 
+  const addNewActionShow = () => {
+    setShowAddNewAction(!showAddNewAction);
+  };
+
   const returnToMainPage = () => {
     let path = "/";
     return navigate(path);
@@ -47,6 +54,9 @@ const SingleCustomer = () => {
         return <div key={index}>{data}</div>;
       })}
       <button onClick={returnToMainPage}>Powrót</button>
+      <button onClick={addNewActionShow}>Dodaj nową akcję</button>
+      <ActionList customerId={params.id}/>
+      {showAddNewAction && <NewAction addNewActionShow={addNewActionShow} defaultSelection={params.id}/>}
     </div>
   );
 };

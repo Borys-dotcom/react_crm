@@ -44,7 +44,7 @@ const HandleCustomer = () => {
   const navigate = useNavigate();
 
   const acquireCustomerData = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     const propPath = e.target.id.split(".");
     const tempCustomerData = { ...customerData };
 

@@ -25,3 +25,8 @@ body {
 .button-yes {
   background-color: #7EFF33;
 }
+
+.button-no:hover,
+.button-yes:hover {
+  cursor: pointer;
+}

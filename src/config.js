@@ -10,6 +10,7 @@ const config = {
 
     action: {
         selectOptions: [
+            {key: "", value: "---"},
             {key: "meeting", value: "Spotkanie"},
             {key: "phoneCall", value: "Rozmowa telefoniczna"},
             {key: "email", value: "Wiadomość email"}

@@ -66,6 +66,7 @@ const SingleCustomer = () => {
               defaultSelection={params.id}
               customerData={[customerData._id, customerData.name]}
               closeWindow={addNewActionWidowClosed}
+              processType={"create"}
             />
           )}
         </>

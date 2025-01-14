@@ -9,6 +9,7 @@ const CustomSelect = (props) => {
       defaultValue={props.defaultSelection}
       disabled = {props.disabled}
       onChange={props.onChange}
+      value={props.value}
     >
       {props.selectOptions.map((selectOption, index) => {
         return (

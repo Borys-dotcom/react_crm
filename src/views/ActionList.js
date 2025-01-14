@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import config from "../config";
+import NewAction from "./NewAction";
 
 const ActionList = (props) => {
   const [actionList, setActionList] = useState([]);
+  const [showAddNewAction, setShowAddNewAction] = useState(false);
+  const [idOfActionToEdit, setIdOfActionToEdit] = useState("");
 
   const getActionListFromDB = () => {
     let path = `http://${config.db.url}:${config.db.port}/${config.db.collection.action}/${props.customerData[0]}`;
-    console.log("pobieram listę akcji");
     axios
       .get(path)
       .then((actions) => {
@@ -20,7 +22,6 @@ const ActionList = (props) => {
 
   const deleteAction = (e) => {
     let path = `http://${config.db.url}:${config.db.port}/${config.db.collection.action}/delete/${e.target.id}`;
-    console.log("kasuję");
     axios
       .delete(path)
       .then(() => {
@@ -29,10 +30,17 @@ const ActionList = (props) => {
       .catch((err) => {
         console.log(err);
       });
-
   };
 
-  console.log(actionList);
+  const addNewActionWidowClosed = () => {
+    setShowAddNewAction(!showAddNewAction);
+    getActionListFromDB();
+  }
+
+  const addNewActionShow = (e) => {
+    setShowAddNewAction(!showAddNewAction);
+    setIdOfActionToEdit(e.target.id);
+  }
 
   useEffect(() => {
     getActionListFromDB();
@@ -58,7 +66,7 @@ const ActionList = (props) => {
                 <td>{action.description}</td>
                 <td>{action.date}</td>
                 <td>
-                  <button>Edytuj</button>
+                  <button onClick={addNewActionShow} id={action._id}>Edytuj</button>
                   <button onClick={deleteAction} id={action._id}>
                     Usuń
                   </button>
@@ -68,6 +76,15 @@ const ActionList = (props) => {
           })}
         </tbody>
       </table>
+      {showAddNewAction && (
+        <NewAction
+          defaultSelection={""}
+          idOfActionToEdit={idOfActionToEdit}
+          customerData={[props.customerData[0], props.customerData[1]]}
+          closeWindow={addNewActionWidowClosed}
+          processType={"edit"}
+        />
+      )}
     </div>
   );
 };

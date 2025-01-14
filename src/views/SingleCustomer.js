@@ -13,6 +13,7 @@ const SingleCustomer = () => {
   const [customerData, setCustomerData] = useState(null);
   const navigate = useNavigate();
   const [showAddNewAction, setShowAddNewAction] = useState(false);
+  const [getActionData, setGetActionData] = useState(false);
 
   const getCustomerData = () => {
     axios
@@ -30,6 +31,11 @@ const SingleCustomer = () => {
   const addNewActionShow = () => {
     setShowAddNewAction(!showAddNewAction);
   };
+
+  const addNewActionWidowClosed = () => {
+    setShowAddNewAction(!showAddNewAction);
+    setGetActionData(!getActionData);
+  }
 
   const returnToMainPage = () => {
     let path = "/";
@@ -53,12 +59,13 @@ const SingleCustomer = () => {
           <p>NIP: {customerData.taxNumber}</p>
           <button onClick={returnToMainPage}>Powrót</button>
           <button onClick={addNewActionShow}>Dodaj nową akcję</button>
-          <ActionList customerData={[customerData._id, customerData.name]} />
+          <ActionList customerData={[customerData._id, customerData.name]} getActionData={getActionData}/>
           {showAddNewAction && (
             <NewAction
               addNewActionShow={addNewActionShow}
               defaultSelection={params.id}
               customerData={[customerData._id, customerData.name]}
+              closeWindow={addNewActionWidowClosed}
             />
           )}
         </>

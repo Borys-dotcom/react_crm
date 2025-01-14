@@ -6,10 +6,10 @@ const ActionList = (props) => {
   const [actionList, setActionList] = useState([]);
 
   const getActionListFromDB = () => {
+    let path = `http://${config.db.url}:${config.db.port}/${config.db.collection.action}/${props.customerData[0]}`;
+    console.log("pobieram listę akcji");
     axios
-      .get(
-        `http://${config.db.url}:${config.db.port}/${config.db.collection.action}/${props.customerData[0]}`
-      )
+      .get(path)
       .then((actions) => {
         setActionList(actions.data);
       })
@@ -18,9 +18,25 @@ const ActionList = (props) => {
       });
   };
 
+  const deleteAction = (e) => {
+    let path = `http://${config.db.url}:${config.db.port}/${config.db.collection.action}/delete/${e.target.id}`;
+    console.log("kasuję");
+    axios
+      .delete(path)
+      .then(() => {
+        getActionListFromDB();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+  };
+
+  console.log(actionList);
+
   useEffect(() => {
     getActionListFromDB();
-  }, []);
+  }, [props.getActionData]);
 
   return (
     <div className="container">
@@ -43,7 +59,9 @@ const ActionList = (props) => {
                 <td>{action.date}</td>
                 <td>
                   <button>Edytuj</button>
-                  <button>Usuń</button>
+                  <button onClick={deleteAction} id={action._id}>
+                    Usuń
+                  </button>
                 </td>
               </tr>
             );

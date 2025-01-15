@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "../config";
 import "./Customers.css";
-import { Link, useNavigate } from "react-router";
+import ConfirmationWindow from"../components/ConfirmationWindow";
+import { useNavigate } from "react-router";
 
 const Customers = () => {
   const [customerList, setCustomerList] = useState([]);
@@ -55,13 +56,16 @@ const Customers = () => {
 
     axios
       .delete(path)
+      .then(() => {
+        setShowPopUp(!showPopUp);
+      })
       .catch((err) => {
         console.log(err);
       })
       .then(() => {
         getCustomerData();
       });
-    setShowPopUp(!showPopUp);
+    
   };
 
   useEffect(() => {
@@ -112,26 +116,11 @@ const Customers = () => {
         </tbody>
       </table>
       {showPopUp && (
-        <div className="popup-window">
-          <div className="popup-content">
-            <div>
-              Czy na pewno chcesz usunąć użytkownika {customerToDelete[0].name}?
-            </div>
-            <div className="button-container">
-              <button onClick={deleteCustomer} className="button-yes">
-                Tak
-              </button>
-              <button
-                onClick={() => {
-                  setShowPopUp(!showPopUp);
-                }}
-                className="button-no"
-              >
-                Nie
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmationWindow 
+          clickedYes={deleteCustomer} 
+          clickedNo={() => {setShowPopUp(!showPopUp)}} 
+          message={`Czy chcesz usunąć użytkownika ${customerToDelete[0].name}`}
+        />
       )}
     </div>
   );

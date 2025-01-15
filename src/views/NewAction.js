@@ -5,7 +5,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const NewAction = (props) => {
-  // console.log(props.idOfActionToEdit)
   const [newActionData, setNewActionData] = useState({
     name: props.customerData[1],
     type: "",
@@ -49,7 +48,6 @@ const NewAction = (props) => {
       axios
         .put(path, newActionData)
         .then((res) => {
-          console.log(res);
           props.closeWindow();
         })
         .catch((err) => {
@@ -71,8 +69,6 @@ const NewAction = (props) => {
         });
     }
   };
-
-  console.log(newActionData);
 
   useState(() => {
     initializeFormData();

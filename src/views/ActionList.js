@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import config from "../config";
 import NewAction from "./NewAction";
+import ConfirmationWindow from "../components/ConfirmationWindow";
 
 const ActionList = (props) => {
   const [actionList, setActionList] = useState([]);
   const [showAddNewAction, setShowAddNewAction] = useState(false);
   const [idOfActionToEdit, setIdOfActionToEdit] = useState("");
+  const [showConfirmationWindow, setShowConfirmationWindow] = useState(false);
+  const [idOfActionToDelete, setIdOfActionToDelete] = useState("");
 
   const getActionListFromDB = () => {
     let path = `http://${config.db.url}:${config.db.port}/${config.db.collection.action}/${props.customerData[0]}`;
@@ -26,6 +29,7 @@ const ActionList = (props) => {
       .delete(path)
       .then(() => {
         getActionListFromDB();
+        setShowConfirmationWindow(false);
       })
       .catch((err) => {
         console.log(err);
@@ -67,7 +71,10 @@ const ActionList = (props) => {
                 <td>{action.date}</td>
                 <td>
                   <button onClick={addNewActionShow} id={action._id}>Edytuj</button>
-                  <button onClick={deleteAction} id={action._id}>
+                  <button onClick={() => {
+                    setShowConfirmationWindow(true);
+                    setIdOfActionToDelete(action._id);
+                    }} id={action._id}>
                     Usuń
                   </button>
                 </td>
@@ -76,6 +83,14 @@ const ActionList = (props) => {
           })}
         </tbody>
       </table>
+      {showConfirmationWindow && (
+        <ConfirmationWindow
+          idOfTarget={idOfActionToDelete}
+          clickedYes={deleteAction}
+          clickedNo={() => {setShowConfirmationWindow(false)}}
+          message={"Czy na pewno chcesz usunąć wybraną akcję?"}
+        />
+      )}
       {showAddNewAction && (
         <NewAction
           defaultSelection={""}

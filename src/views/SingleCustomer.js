@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import React from "react";
 import ActionList from "./ActionList";
-import NewAction from "./NewAction";
+import HandleAction from "./HandleAction";
 
 const SingleCustomer = () => {
   let params = useParams();
@@ -61,7 +61,7 @@ const SingleCustomer = () => {
           <button onClick={addNewActionShow}>Dodaj nową akcję</button>
           <ActionList customerData={[customerData._id, customerData.name]} getActionData={getActionData}/>
           {showAddNewAction && (
-            <NewAction
+            <HandleAction
               addNewActionShow={addNewActionShow}
               defaultSelection={params.id}
               customerData={[customerData._id, customerData.name]}

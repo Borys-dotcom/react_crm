@@ -10,10 +10,11 @@ const CustomSelect = (props) => {
       disabled = {props.disabled}
       onChange={props.onChange}
       value={props.value}
+      className={props.className}
     >
       {props.selectOptions.map((selectOption, index) => {
         return (
-          <option value={selectOption.key} key={index}>
+          <option value={selectOption.value} key={selectOption.key}>
             {selectOption.value}
           </option>
         );

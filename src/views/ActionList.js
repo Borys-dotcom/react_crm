@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import config from "../config";
-import NewAction from "./NewAction";
+import HandleAction from "./HandleAction";
 import ConfirmationWindow from "../components/ConfirmationWindow";
 
 const ActionList = (props) => {
@@ -92,7 +92,7 @@ const ActionList = (props) => {
         />
       )}
       {showAddNewAction && (
-        <NewAction
+        <HandleAction
           defaultSelection={""}
           idOfActionToEdit={idOfActionToEdit}
           customerData={[props.customerData[0], props.customerData[1]]}

@@ -4,7 +4,8 @@ const config = {
         port: "3005",
         collection: {
             customer: "customer",
-            action: "action"
+            action: "action",
+            user: "user"
         }
     },
 

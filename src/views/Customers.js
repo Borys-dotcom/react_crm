@@ -17,9 +17,14 @@ const Customers = () => {
         `http://${config.db.url}:${config.db.port}/${config.db.collection.customer}/`
       )
       .then((res) => {
+        console.log(res)
         setCustomerList(res.data);
       })
       .catch((err) => {
+        if (err.response.data.err === "noLogged"){
+          const path = "/user/login/";
+          navigate(path);
+        }
         console.log(err);
       });
   };
@@ -76,7 +81,8 @@ const Customers = () => {
     <div className="container">
       <h1>Lista klientów</h1>
       <button onClick={addNewCustomer}>Add new</button>
-      <table>
+      {(customerList.length) ? 
+      (<table>
         <thead className="table-header">
           <tr>
             <th>Nazwa</th>
@@ -114,7 +120,8 @@ const Customers = () => {
             );
           })}
         </tbody>
-      </table>
+      </table>) :
+      <h2>Loading..</h2>}
       {showPopUp && (
         <ConfirmationWindow 
           clickedYes={deleteCustomer} 

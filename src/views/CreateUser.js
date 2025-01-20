@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./CreateUser.css";
 import axios from "axios";
 import config from "../config";
+import { useNavigate } from "react-router";
 
 const CreateUser = () => {
   const [userData, setUserData] = useState({
@@ -12,6 +13,7 @@ const CreateUser = () => {
   });
   const [errorMessages, setErrorMessages] = useState([]);
   const [inputClassObject, setInputClassObject] = useState({});
+  const navigate = useNavigate();
 
   const handleUserData = (e) => {
     setUserData((prevUserData) => {
@@ -33,6 +35,7 @@ const CreateUser = () => {
       axios.post(path, userDataToSubmit)
       .then((res) => {
         console.log(res);
+        navigate("/user/login/");
       })
       .catch((err) => {
         console.log(err);

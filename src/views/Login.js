@@ -2,6 +2,8 @@ import "./Login.css";
 import { useState } from "react";
 import config from "../config";
 import axios from "axios";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [userData, setUserData] = useState({
@@ -10,7 +12,10 @@ const Login = () => {
   });
   const [errorMessages, setErrorMessages] = useState([]);
   const [inputClassObject, setInputClassObject] = useState({});
+  const [cookies, setCookie] = useCookies(["token", "user"]);
 
+  const navigate = useNavigate();
+ 
   const handleUserData = (e) => {
     setUserData((prevUserData) => {
       return { ...prevUserData, [e.target.name]: e.target.value };
@@ -24,10 +29,20 @@ const Login = () => {
       axios
         .post(path, userData)
         .then((res) => {
-          console.log(res);
+          setCookie("token", res.data.token);
+          setCookie("user", userData.username);
+          axios.defaults.headers.common['Authorization'] = res.data.token;
+          navigate("/");
         })
         .catch((err) => {
+          let tempErrorMessages = [];
           console.log(err);
+          if (err.response?.data.err === "noUser") {
+            tempErrorMessages.push("Użytkownik o podanej nazwie nie istnieje.");
+          } else if (err.response?.data.err === "wrongPassword") {
+            tempErrorMessages.push("Wpisano niepoprawne hasło");
+          }
+          setErrorMessages(tempErrorMessages);
         });
     }
   };

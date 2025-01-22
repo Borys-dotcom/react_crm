@@ -17,7 +17,6 @@ const Customers = () => {
         `http://${config.db.url}:${config.db.port}/${config.db.collection.customer}/`
       )
       .then((res) => {
-        console.log(res)
         setCustomerList(res.data);
       })
       .catch((err) => {

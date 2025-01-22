@@ -1,9 +1,11 @@
-import "./Login.css";
+// import "./Login.css";
 import { useState } from "react";
 import config from "../config";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 const Login = () => {
   const [userData, setUserData] = useState({
@@ -15,7 +17,7 @@ const Login = () => {
   const [cookies, setCookie] = useCookies(["token", "user"]);
 
   const navigate = useNavigate();
- 
+
   const handleUserData = (e) => {
     setUserData((prevUserData) => {
       return { ...prevUserData, [e.target.name]: e.target.value };
@@ -29,9 +31,9 @@ const Login = () => {
       axios
         .post(path, userData)
         .then((res) => {
-          setCookie("token", res.data.token);
-          setCookie("user", userData.username);
-          axios.defaults.headers.common['Authorization'] = res.data.token;
+          setCookie("token", res.data.token, {path: "/"});
+          setCookie("user", userData.username, {path: "/"});
+          axios.defaults.headers.common["Authorization"] = res.data.token;
           navigate("/");
         })
         .catch((err) => {
@@ -74,11 +76,70 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+    <div className="card p-5 mx-auto container h-100 mt-5" style={{width: "32rem"}}>
       <h2>Podaj dane do logowania:</h2>
+      <div className="create-user-organising-div row align-items-center">
+        <Form onSubmit={submitUserData}>
+          <Form.Group className="mb-3" controlId="username">
+            <Form.Label>Nazwa użytkownika: </Form.Label>
+            <Form.Control
+              type="text"
+              name="username"
+              id="username"
+              onChange={handleUserData}
+              value={userData.username || ""}
+              placeholder="Nazwa użytkownika"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="password">
+            <Form.Label>Hasło: </Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              id="password"
+              onChange={handleUserData}
+              value={userData.password || ""}
+              placeholder="hasło"
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" className="btn btn-success">
+            Wyślij
+          </Button>
+        </Form>
+        <div className="create-user-alarm-container">
+          <ul>
+            {errorMessages.map((message, index) => {
+              return <li key={index}>{message}</li>;
+            })}
+          </ul>
+        </div>
+      </div>
+      <a href="/user/create/">Stwórz nowego użytkownika</a>
+    </div>
+  );
+};
+
+export default Login;
+
+{
+  /* <div className="container">
+      <h2>Podaj dane do logowania:</h2>
+      <a href="/user/create/">Stwórz nowego użytkownika</a>
       <div className="create-user-organising-div">
-        <form onSubmit={submitUserData}>
-          <label htmlFor="username">Nazwa użytkownika: </label>
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicText">
+            <form onSubmit={submitUserData}> }
+            <label htmlFor="username">Nazwa użytkownika: </label>
+            <Form.Label>Nazwa użytkownika: </Form.Label>
+            <Form.Control
+              type="text"
+              name="username"
+              id="username"
+              onChange={handleUserData}
+              value={userData.username || ""}
+              placeholder="Nazwa użytkownika"
+            />
+          </Form.Group>
           <input
             type="text"
             name="username"
@@ -97,7 +158,8 @@ const Login = () => {
             className={inputClassObject.password}
           />
           <button>Wyślij</button>
-        </form>
+          { </form>
+        </Form>
         <div className="create-user-alarm-container">
           <ul>
             {errorMessages.map((message, index) => {
@@ -106,8 +168,5 @@ const Login = () => {
           </ul>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default Login;
+    </div> */
+}

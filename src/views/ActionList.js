@@ -11,6 +11,8 @@ const ActionList = (props) => {
   const [showConfirmationWindow, setShowConfirmationWindow] = useState(false);
   const [idOfActionToDelete, setIdOfActionToDelete] = useState("");
 
+  console.log(actionList);
+
   const getActionListFromDB = () => {
     let path = `http://${config.db.url}:${config.db.port}/${config.db.collection.action}/${props.customerData[0]}`;
     axios

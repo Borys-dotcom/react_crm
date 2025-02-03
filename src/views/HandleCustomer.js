@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router";
 import "./HandleCustomer.css";
 import { setNestedKey } from "../helpers/helpers";
 import axios from "axios";
+import { Button, Form } from "react-bootstrap";
+import { set } from "mongoose";
 
 const HandleCustomer = () => {
   let params = useParams();
@@ -32,6 +34,7 @@ const HandleCustomer = () => {
   };
 
   const [errorMessages, setErrorMessages] = useState([]);
+  const [showErrorMessages, setShowErrorMessages] = useState(false);
   const [inputState, setInputState] = useState({
     name: "inputNormal",
     address: {
@@ -150,8 +153,10 @@ const HandleCustomer = () => {
     setInputState(tempInputClassObject);
 
     if (errorMessagesArray.length) {
+      setShowErrorMessages(true);
       return false;
     } else {
+      setShowErrorMessages(false);
       return true;
     }
   };
@@ -165,66 +170,79 @@ const HandleCustomer = () => {
 
   return (
     <div className="container">
-      {params.id ? <h2>Modyfikuj dane</h2> : <h2>Nowy klient</h2>}
-      <div className="form-container">
-        <form onSubmit={submitData} onChange={acquireCustomerData}>
-          <label htmlFor="name">Nazwa: </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={customerData.name}
-            onChange={acquireCustomerData}
-            className={`${inputState.name}`}
-          />
-          <label htmlFor="street">Ulica: </label>
-          <input
-            type="text"
-            name="street"
-            id="address.street"
-            value={customerData.address.street}
-            onChange={acquireCustomerData}
-            className={`${inputState.address.street}`}
-          />
-          <label htmlFor="city">Miasto: </label>
-          <input
-            type="text"
-            name="city"
-            id="address.city"
-            value={customerData.address.city}
-            onChange={acquireCustomerData}
-            className={`${inputState.address.city}`}
-          />
-          <label htmlFor="zipCode">Kod pocztowy: </label>
-          <input
-            type="text"
-            name="zipCode"
-            id="address.zipCode"
-            value={customerData.address.zipCode}
-            onChange={acquireCustomerData}
-            className={`${inputState.address.zipCode}`}
-          />
-          <label htmlFor="taxNumber">NIP: </label>
-          <input
-            type="text"
-            name="taxNumber"
-            id="taxNumber"
-            value={customerData.taxNumber}
-            onChange={acquireCustomerData}
-            className={`${inputState.taxNumber}`}
-          />
-          <br />
-          <button type="submit">Zatwierdź</button>
-        </form>
-        <div className="error-messages">
-          <ul>
-            {errorMessages.map((message, index) => {
-              return <li key={index}>{message}</li>;
-            })}
-          </ul>
-        </div>
+    <Button className="btn btn-primary" onClick={returnToMainPage}>
+      Powrót
+    </Button>
+      <div
+        className="card p-5 mx-auto row container h-100 mt-5"
+        style={{ width: "32rem" }}
+      >
+        {params.id ? <h2>Modyfikuj dane</h2> : <h2>Nowy klient</h2>}
+          <Form onSubmit={submitData}>
+            <Form.Group className="mb-3" controlId="name">
+              <Form.Label>Nazwa: </Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                onChange={acquireCustomerData}
+                value={customerData.name}
+                className={`${inputState.name}`}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address.street">
+              <Form.Label>Ulica: </Form.Label>
+              <Form.Control
+                type="text"
+                name="street"
+                onChange={acquireCustomerData}
+                value={customerData.address.street}
+                className={`${inputState.name}`}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address.city">
+              <Form.Label>Miasto: </Form.Label>
+              <Form.Control
+                type="text"
+                name="city"
+                onChange={acquireCustomerData}
+                value={customerData.address.city}
+                className={`${inputState.name}`}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address.zipCode">
+              <Form.Label>Kod pocztowy: </Form.Label>
+              <Form.Control
+                type="text"
+                name="zipCode"
+                onChange={acquireCustomerData}
+                value={customerData.address.zipCode}
+                className={`${inputState.name}`}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="taxNumber">
+              <Form.Label>NIP: </Form.Label>
+              <Form.Control
+                type="text"
+                name="taxNumber"
+                onChange={acquireCustomerData}
+                value={customerData.taxNumber}
+                className={`${inputState.name}`}
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit" className="btn btn-success">
+              Zatwierdź
+            </Button>
+          </Form>
+          {showErrorMessages && (
+            <div className="error-messages">
+              <ul>
+                {errorMessages.map((message, index) => {
+                  return <li key={index}>{message}</li>;
+                })}
+              </ul>
+            </div>
+          )}
       </div>
-      <button onClick={returnToMainPage}>Powrót</button>
     </div>
   );
 };

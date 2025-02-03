@@ -13,9 +13,10 @@ const AppNavbar = (props) => {
           <Nav className="me-auto">
             <Nav.Link href="/add/">Dodaj klienta</Nav.Link>
             <Nav.Link href="/user/create/">Nowy użytkownik</Nav.Link>
-          <Navbar.Text>
+            <Nav.Link href="/" onClick={props.clearCookies}>Wyloguj: {props.currentUser}</Nav.Link>
+          {/* <Navbar.Text>
             <a href="/" onClick={props.clearCookies}>Wyloguj: {props.currentUser}</a>
-          </Navbar.Text>
+          </Navbar.Text> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

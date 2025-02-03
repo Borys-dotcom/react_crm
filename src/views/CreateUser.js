@@ -99,7 +99,6 @@ const CreateUser = (props) => {
             <Form.Control
               type="text"
               name="username"
-              id="username"
               onChange={handleUserData}
               value={userData.username || ""}
               placeholder="Nazwa użytkownika"
@@ -110,7 +109,6 @@ const CreateUser = (props) => {
             <Form.Control
               type="email"
               name="email"
-              id="email"
               onChange={handleUserData}
               value={userData.email || ""}
               placeholder="email"
@@ -121,7 +119,6 @@ const CreateUser = (props) => {
             <Form.Control
               type="password"
               name="password"
-              id="password"
               onChange={handleUserData}
               value={userData.password || ""}
               placeholder="hasło"
@@ -132,7 +129,6 @@ const CreateUser = (props) => {
             <Form.Control
               type="password"
               name="passwordRepeated"
-              id="passwordRepeated"
               onChange={handleUserData}
               value={userData.passwordRepeated || ""}
               placeholder="hasło"

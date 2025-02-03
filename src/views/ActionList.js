@@ -3,6 +3,8 @@ import axios from "axios";
 import config from "../config";
 import HandleAction from "./HandleAction";
 import ConfirmationWindow from "../components/ConfirmationWindow";
+import Button from "react-bootstrap/esm/Button";
+import Table from "react-bootstrap/esm/Table";
 
 const ActionList = (props) => {
   const [actionList, setActionList] = useState([]);
@@ -10,8 +12,6 @@ const ActionList = (props) => {
   const [idOfActionToEdit, setIdOfActionToEdit] = useState("");
   const [showConfirmationWindow, setShowConfirmationWindow] = useState(false);
   const [idOfActionToDelete, setIdOfActionToDelete] = useState("");
-
-  console.log(actionList);
 
   const getActionListFromDB = () => {
     let path = `http://${config.db.url}:${config.db.port}/${config.db.collection.action}/${props.customerData[0]}`;
@@ -41,12 +41,12 @@ const ActionList = (props) => {
   const addNewActionWidowClosed = () => {
     setShowAddNewAction(!showAddNewAction);
     getActionListFromDB();
-  }
+  };
 
   const addNewActionShow = (e) => {
     setShowAddNewAction(!showAddNewAction);
     setIdOfActionToEdit(e.target.id);
-  }
+  };
 
   useEffect(() => {
     getActionListFromDB();
@@ -55,12 +55,13 @@ const ActionList = (props) => {
   return (
     <div className="container">
       <h3>Lista akcji:</h3>
-      <table>
+      <Table striped bordered hover>
         <thead className="table-header">
           <tr>
             <th>Typ</th>
             <th>Opis</th>
             <th>Data</th>
+            <th>Autor</th>
             <th>Akcja</th>
           </tr>
         </thead>
@@ -68,28 +69,43 @@ const ActionList = (props) => {
           {actionList.map((action, index) => {
             return (
               <tr key={index}>
-                <td>{action.type}</td>
-                <td>{action.description}</td>
-                <td>{action.date}</td>
+                <td className="align-middle">{action.type}</td>
+                <td className="align-middle">{action.description}</td>
+                <td className="align-middle">{action.date}</td>
+                <td className="align-middle">{action.creator.username}</td>
                 <td>
-                  <button onClick={addNewActionShow} id={action._id}>Edytuj</button>
-                  <button onClick={() => {
-                    setShowConfirmationWindow(true);
-                    setIdOfActionToDelete(action._id);
-                    }} id={action._id}>
+                  <Button
+                    variant="warning"
+                    className="btn btn-success mx-2"
+                    onClick={addNewActionShow}
+                    id={action._id}
+                  >
+                    Edytuj
+                  </Button>
+                  <Button
+                    variant="danger"
+                    className="btn btn-success mx-2"
+                    onClick={() => {
+                      setShowConfirmationWindow(true);
+                      setIdOfActionToDelete(action._id);
+                    }}
+                    id={action._id}
+                  >
                     Usuń
-                  </button>
+                  </Button>
                 </td>
               </tr>
             );
           })}
         </tbody>
-      </table>
+      </Table>
       {showConfirmationWindow && (
         <ConfirmationWindow
           idOfTarget={idOfActionToDelete}
           clickedYes={deleteAction}
-          clickedNo={() => {setShowConfirmationWindow(false)}}
+          clickedNo={() => {
+            setShowConfirmationWindow(false);
+          }}
           message={"Czy na pewno chcesz usunąć wybraną akcję?"}
         />
       )}

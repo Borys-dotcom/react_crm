@@ -5,7 +5,8 @@ const config = {
         collection: {
             customer: "customer",
             action: "action",
-            user: "user"
+            user: "user",
+            files: "files"
         }
     },
 

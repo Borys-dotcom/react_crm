@@ -85,7 +85,6 @@ const Login = () => {
             <Form.Control
               type="text"
               name="username"
-              id="username"
               onChange={handleUserData}
               value={userData.username || ""}
               placeholder="Nazwa użytkownika"
@@ -96,14 +95,13 @@ const Login = () => {
             <Form.Control
               type="password"
               name="password"
-              id="password"
               onChange={handleUserData}
               value={userData.password || ""}
               placeholder="hasło"
             />
           </Form.Group>
           <Button variant="primary" type="submit" className="btn btn-success">
-            Wyślij
+            Zaloguj
           </Button>
         </Form>
         <div className="create-user-alarm-container">
@@ -120,53 +118,3 @@ const Login = () => {
 };
 
 export default Login;
-
-{
-  /* <div className="container">
-      <h2>Podaj dane do logowania:</h2>
-      <a href="/user/create/">Stwórz nowego użytkownika</a>
-      <div className="create-user-organising-div">
-        <Form>
-          <Form.Group className="mb-3" controlId="formBasicText">
-            <form onSubmit={submitUserData}> }
-            <label htmlFor="username">Nazwa użytkownika: </label>
-            <Form.Label>Nazwa użytkownika: </Form.Label>
-            <Form.Control
-              type="text"
-              name="username"
-              id="username"
-              onChange={handleUserData}
-              value={userData.username || ""}
-              placeholder="Nazwa użytkownika"
-            />
-          </Form.Group>
-          <input
-            type="text"
-            name="username"
-            id="username"
-            onChange={handleUserData}
-            value={userData.username || ""}
-            className={inputClassObject.username}
-          />
-          <label htmlFor="password">Hasło: </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            onChange={handleUserData}
-            value={userData.password || ""}
-            className={inputClassObject.password}
-          />
-          <button>Wyślij</button>
-          { </form>
-        </Form>
-        <div className="create-user-alarm-container">
-          <ul>
-            {errorMessages.map((message, index) => {
-              return <li key={index}>{message}</li>;
-            })}
-          </ul>
-        </div>
-      </div>
-    </div> */
-}

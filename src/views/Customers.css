@@ -16,5 +16,7 @@ h1 {
     background-color: #eee;
 }
 
-
-
+.container-flex {
+    display: flex;
+    align-items: center;
+}

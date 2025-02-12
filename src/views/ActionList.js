@@ -71,7 +71,7 @@ const ActionList = (props) => {
               <tr key={index}>
                 <td className="align-middle">{action.type}</td>
                 <td className="align-middle">{action.description}</td>
-                <td className="align-middle">{action.date}</td>
+                <td className="align-middle">{action.date.slice(0,10)}</td>
                 <td className="align-middle">{action.creator.username}</td>
                 <td>
                   <Button

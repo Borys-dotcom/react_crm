@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import React from "react";
 import ActionList from "./ActionList";
+import FilesList from "./FilesList";
 import HandleAction from "./HandleAction";
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/esm/Form";
@@ -16,8 +17,10 @@ const SingleCustomer = () => {
   const navigate = useNavigate();
   const [showAddNewAction, setShowAddNewAction] = useState(false);
   const [getActionData, setGetActionData] = useState(false);
+  const [getFilesData, setGetFilesData] = useState(false);
   const [file, setFile] = useState();
   const [fileNote, setFileNote] = useState("");
+  const [keyForResetInput, setKeyForResetInput] = useState("")
 
   const getCustomerData = () => {
     axios
@@ -45,20 +48,24 @@ const SingleCustomer = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("note", fileNote);
+    formData.append("customer", params.id);
     for (let i = 0; i < file.length; i++) {
       formData.append("file", file[i]);
     }
+
     const multerConfig = { headers: { "Content-Type": "multipart/form-data" } };
-    console.log(file);
 
     axios
       .post(
-        `http://${config.db.url}:${config.db.port}/${config.db.collection.files}/upload/abc`,
+        `http://${config.db.url}:${config.db.port}/${config.db.collection.files}/upload/`,
         formData,
         multerConfig
       )
-      .then((data) => {
-        console.log(data);
+      .then(() => {
+        setKeyForResetInput(Date.now());
+        setFileNote("");
+        setGetFilesData(!getFilesData);
+        getCustomerData();
       })
       .catch((err) => {
         console.log(err);
@@ -95,7 +102,7 @@ const SingleCustomer = () => {
               Powrót
             </Button>
             <Button className="btn btn-success mx-2" onClick={addNewActionShow}>
-              Edytuj
+              Dodaj akcję
             </Button>
           </div>
           <div
@@ -121,6 +128,7 @@ const SingleCustomer = () => {
                   name="file"
                   type="file"
                   onChange={handleFileUploadData}
+                  key={keyForResetInput || ""}
                   multiple
                 />
               </Form.Group>
@@ -131,6 +139,7 @@ const SingleCustomer = () => {
                   as="textarea"
                   rows={4}
                   placeholder="Wpisz notatkę"
+                  value={fileNote}
                   onChange={handleFileUploadData}
                 />
               </Form.Group>
@@ -143,6 +152,7 @@ const SingleCustomer = () => {
               </Button>
             </Form>
           </div>
+          <FilesList customerId={params.id} getFilesData={getFilesData} />
           <ActionList
             customerData={[customerData._id, customerData.name]}
             getActionData={getActionData}

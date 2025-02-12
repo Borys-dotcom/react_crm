@@ -4,7 +4,6 @@ import "./HandleCustomer.css";
 import { setNestedKey } from "../helpers/helpers";
 import axios from "axios";
 import { Button, Form } from "react-bootstrap";
-import { set } from "mongoose";
 
 const HandleCustomer = () => {
   let params = useParams();

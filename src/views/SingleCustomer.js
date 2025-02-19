@@ -49,6 +49,12 @@ const SingleCustomer = () => {
     const formData = new FormData();
     formData.append("note", fileNote);
     formData.append("customer", params.id);
+
+    if (file === undefined) {
+      window.alert("Nie wybrano plików do wysłania.")
+      return;
+    }
+
     for (let i = 0; i < file.length; i++) {
       formData.append("file", file[i]);
     }

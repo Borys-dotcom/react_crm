@@ -3,16 +3,45 @@ import "./FilesList.css";
 import { Table, Button } from "react-bootstrap";
 import config from "../config";
 import axios from "axios";
+import download from "downloadjs";
 
 const FilesList = (props) => {
   const [filesList, setFilesList] = useState([]);
 
   const getFilesData = () => {
-    const path = `http://${config.db.url}:${config.db.port}/files/find/${props.customerId}`;
+    const path = `http://${config.db.url}:${config.db.port}/${config.db.collection.files}/find/${props.customerId}`;
     axios
       .get(path)
       .then((res) => {
         setFilesList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  console.log(filesList);
+
+  const handleDeleteFile = (e) => {
+    const path = `http://${config.db.url}:${config.db.port}/${config.db.collection.files}/delete/${props.customerId}/${e.target.id}`;
+    axios
+      .delete(path)
+      .then((res) => {
+        console.log(res);
+        getFilesData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDownloadFile = (e) => {
+    const path = `http://${config.db.url}:${config.db.port}/${config.db.collection.files}/download/${e.target.id}`;
+    axios
+      .get(path)
+      .then((response) => {
+        console.log(response);
+        download(response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -49,21 +78,18 @@ const FilesList = (props) => {
                     <Button
                       variant="warning"
                       className="btn btn-success mx-2"
-                      // onClick={addNewActionShow}
-                      // id={action._id}
-                    >
-                      Edytuj
-                    </Button>
-                    <Button
-                      variant="danger"
-                      className="btn btn-success mx-2"
-                      // onClick={() => {
-                      //   setShowConfirmationWindow(true);
-                      //   setIdOfActionToDelete(action._id);
-                      // }}
-                      // id={action._id}
+                      onClick={handleDeleteFile}
+                      id={file._id}
                     >
                       Usuń
+                    </Button>
+                    <Button
+                      variant="basic"
+                      className="btn btn-success mx-2"
+                      onClick={handleDownloadFile}
+                      id={file._id}
+                    >
+                      Pobierz
                     </Button>
                   </td>
                 </tr>
